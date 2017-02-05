@@ -19,7 +19,7 @@ class RestPusher:
         self.server = server
         self.port = port
     
-    def set_server(self, server):
+    def set_server(self, serveraddress):
         """
         change the target hostname/ip addr to the given one
         :param server, address of the server
