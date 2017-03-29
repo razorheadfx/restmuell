@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #Copyright © 2017 razorheadfx <razorhead.effect@gmail.com>
 #This work is free. You can redistribute it and/or modify it under the
 #terms of the Do What The Fuck You Want To Public License, Version 2,
@@ -11,7 +13,7 @@ import sys
 
 log = logging.getLogger(__name__)
 frm = '[%(levelname)s] %(module)s.%(funcName)s - %(message)s'
-logging.basicConfig(stream=sys.stdout, level = logging.WARN, format = frm)
+logging.basicConfig(stream=sys.stdout, level = logging.INFO, format = frm)
 
 class RestPusher:
     """ a simple wrapper for post/put/get/delete http requests"""
@@ -64,7 +66,7 @@ class RestPusher:
             headers = {"Content-type": "application/json","Accept": "application/json"}
             
         if data != None:
-            reqbody = data.dumps(data)
+            reqbody = json.dumps(data)
         else:
             reqbody = None
         
@@ -74,8 +76,8 @@ class RestPusher:
         con.request(action, url, body = reqbody, headers =  headers)
         response = con.getresponse()        
         
-        if response.status != 200:
-            log.error("Non 200 statuscode: %s for request %s:%s/%s\n body:%s headers: %s" %(response.status,action, self.server, url, reqbody, headers))
+        if not response.status < 300:
+            log.error("Non 2xx statuscode: %s for request %s:%s/%s\n body:%s headers: %s" %(response.status,action, self.server, url, reqbody, headers))
         
         
         try:
@@ -91,3 +93,10 @@ class RestPusher:
         con.close()
         
         return resp_data
+        
+if __name__ == "__main__":
+    pass
+    
+    
+    
+    
